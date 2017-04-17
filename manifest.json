@@ -1,0 +1,6 @@
+{
+  "name": "epiviz-workspace",
+  "short_name": "epiviz-workspace",
+  "start_url": "/",
+  "display": "standalone"
+}
