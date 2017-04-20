@@ -1,0 +1,55 @@
+<!-- Polymer Dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!-- Firebase auth -->
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
+
+<dom-module id="epiviz-workspace-header">
+	<template>
+		<firebase-auth id="auth" user="{{user}}" provider="google"></firebase-auth>
+		<app-header>
+			<app-toolbar>
+
+				<template is="dom-if" if="[[!user]]" >
+					<paper-button on-tap="Login">
+						Login
+					</paper-button>
+				</template>
+
+				<template is="dom-if" if="[[user]]" >
+					<paper-button on-tap="Logout">
+						Login
+					</paper-button>
+				</template>
+
+			</app-toolbar>
+		</app-header>
+		<paper-toast id="toaster"></paper-toast>
+	</template>
+
+	<script>
+		Polymer({
+			is: "epiviz-workspace-header",
+			properties: {
+				user: {
+					type: Object,
+					notify: true,
+					value: false,
+				},
+			},
+			login: function() {
+				this.$$('#auth').signInWithPopup().then((result) => {
+					this.$$('#toaster').show('Hello ' + result.user.displayName);
+				});
+			},
+			logout: function() {
+				this.$$('#auth').signOut().then(() => {
+					this.$.toaster.show('Goodbye!');
+				});
+			}
+
+		});
+	</script>
+</dom-module>

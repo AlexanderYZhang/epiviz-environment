@@ -1,27 +1,60 @@
+<!-- Polymer Global dependencies -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/qairoe-app-layout/qairoe-app-layout.html">
+<link rel="import" href="../../bower_components/qairoe-app-router/qairoe-app-router.html">
+
+<!-- Firebase dependencies -->
+<link rel="import" href="../../bower_components/polymerfire/firebase-app-script.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-auth-script.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-database-script.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../epiviz-workspace-header/epiviz-workspace-header.html">
 
 <dom-module id="epiviz-workspace-app">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <h2>Hello [[prop1]]</h2>
-  </template>
+    <template>
+        <style is="custom-style">
+        </style>
+            <firebase-app 
+                auth-domain="[[config.authDomain]]"
+                database-url="[[config.databaseURL]]"
+                api-key="[[config.apiKey]]">
+            </firebase-app>
+        <h2>Hello [[prop1]]</h2>
+        <epiviz-workspace-header user="{{user}}"></epiviz-workspace-header>
+    </template>
 
-  <script>
-    Polymer({
+    <script>
+        var config = {
+            apikey: "AIzaSyAVpVA5ISnB7WoIc8mRHdFayDdezQSncfw",
+            databaseURL: "https://epiviz-43fd4.firebaseio.com/",
+            authDomain: "epiviz-43fd4.firebaseapp.com",
+        }
+        Polymer({
 
-      is: 'epiviz-workspace-app',
+            is: 'epiviz-workspace-app',
 
-      properties: {
-        prop1: {
-          type: String,
-          value: 'epiviz-workspace-app',
-        },
-      },
+            properties: {
+                prop1: {
+                    type: String,
+                    value: 'epiviz-workspace-app',
+                },
+                config: {
+                    type: Object,
+                    readOnly: true,
+                    value: function() { return config; }
+                },
+                user: {
+                    type: Object,
+                },
+                signedIn: {
+                    type: Boolean,
+                    value: false,
+                }
+            },
+            _authChanged: function(user) {
+                this.signedIn = !!user;
+            }
 
-    });
-  </script>
+        });
+    </script>
 </dom-module>
